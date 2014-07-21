@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "ruby-sass": {
+        "path": "."
+      }
+    },
+    "packages": {
+      "ruby-sass": {
+        "path": "."
+      }
+    }
+  }
+}
