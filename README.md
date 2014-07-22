@@ -1,4 +1,4 @@
-# Ruby sass compiler
+# Ruby sass compiler for meteor
 
 ## Install
 
