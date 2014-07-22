@@ -99,5 +99,5 @@ Specify the default encoding for Sass files.
 ### Example
 
     {
-      "input": "path/to/main/sass/file"
+      "file": "path/to/main/sass/file.scss"
     }
