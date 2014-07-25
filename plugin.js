@@ -2,6 +2,16 @@ var path = Npm.require("path");
 var fs   = Npm.require("fs");
 var sh   = Npm.require('execSync');
 
+var isEmpty = function(obj) {
+  if (typeof obj === "object")
+    if (obj instanceof Array)
+      return obj.length === 0
+    else {
+      return Object.keys(obj).length === 0
+    }
+  else
+    return !Boolean(obj)
+}
 
 var optionsBuilder = function(options) {
   if (typeof options !== "object")
@@ -55,17 +65,46 @@ var optionsBuilder = function(options) {
   return result.join(" ");
 }
 
+var isModified = function(stat, file) {
+  var newStat = fs.statSync(file)
+  var t1 = stat.mtime && stat.mtime.getTime();
+  var t2 = newStat.mtime && newStat.mtime.getTime();
+  var eq = (t1 !== t2);
+  stat.mtime = newStat.mtime;
+  return eq;
+}
 
+var _options = {};
+var _optionsStat = {};
+var readOptions = function(file) {
+
+  var read = function(file) {
+    var content = fs.readFileSync(file);
+    return JSON.parse(content);
+  }
+
+  var exists = fs.existsSync(file);
+
+  if (exists && isEmpty(_options)) {
+    _options = read(file);
+  }
+  else if (exists && isModified(_optionsStat, file)) {
+    _options = read(file);
+  }
+  return _options;
+}
+
+
+var _cache = {};
 var sourceHandler = function(compileStep) {
   var optionsFile = path.join(process.cwd(), 'ruby-sass.json');
-  var options = {};
+  var options     = readOptions(optionsFile);
+  var cmd         = optionsBuilder(options);
 
-  if (fs.existsSync(optionsFile)) {
-    var content = fs.readFileSync(optionsFile);
-    options = JSON.parse(content);
-  }
-  var cmd = optionsBuilder(options);
-  if (cmd) {
+  _cache[compileStep.inputPath] = _cache[compileStep.inputPath] || {}
+  var stat = _cache[compileStep.inputPath];
+
+  if (cmd && isModified(stat, compileStep.inputPath)) {
     var r = sh.exec(cmd);
     if (r.code) {
       compileStep.error({
