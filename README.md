@@ -31,11 +31,6 @@ Add a `ruby-sass.json` file to root directory of project.
 Path to main file.
 
 
-**output** `string`
-
-Path to output file.
-
-
 **unixNewlines** `boolean`, default: `false`
 
 Use Unix-style newlines in written files.
@@ -86,18 +81,24 @@ The path to put cached Sass files. Defaults to `.sass-cache`
 Don't cache to sassc files.
 
 
-**sourcemap** `boolean`, default: `false`
-
-Create sourcemap files next to the generated CSS files. `output` required.
-
-
 **defaultEncoding** `string`
 
 Specify the default encoding for Sass files.
 
 
-### Example
+### Examples
+
+#### Simple
 
     {
       "file": "path/to/main/sass/file.scss"
+    }
+
+#### Files
+
+    {
+      "files": {
+        "styles/application.scss": ["styles/**/*.scss", "include/variabled.css"],
+        "vendor/bootstrap/bootstrap.scss": "vendor/bootstrap/**/*.scss"
+      }
     }
