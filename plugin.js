@@ -101,11 +101,13 @@ var sourceHandler = function(compileStep) {
   var options     = readOptions(optionsFile);
   var cmd         = optionsBuilder(options);
 
-  _cache[compileStep.inputPath] = _cache[compileStep.inputPath] || {}
-  var stat = _cache[compileStep.inputPath];
+  var input = compileStep.inputPath;
+
+  _cache[input] = _cache[input] || {}
+  var stat = _cache[input];
 
   if (cmd) {
-    if (!stat.data || isModified(stat, compileStep.inputPath)) {
+    if (!stat.data || isModified(stat, input)) {
       var r = sh.exec(cmd);
       stat.data = r.stdout;
       stat.code = r.code;
