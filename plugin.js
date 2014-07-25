@@ -105,14 +105,18 @@ var sourceHandler = function(compileStep) {
   var stat = _cache[compileStep.inputPath];
 
   if (cmd && isModified(stat, compileStep.inputPath)) {
-    var r = sh.exec(cmd);
-    if (r.code) {
+    if (!stat.data) {
+      var r = sh.exec(cmd);
+      stat.data = r.stdout;
+      stat.code = r.code;
+    }
+    if (stat.code) {
       compileStep.error({
-        message: "Sass compiler error: \n" + r.stdout
+        message: "Sass compiler error: \n" + stat.data
       });
     }
     else {
-      var data = r.stdout;
+      var data = stat.data;
       if (options.output) {
         data = fs.readFileSync(optionsFile, "utf-8");
       }
