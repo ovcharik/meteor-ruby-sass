@@ -104,8 +104,8 @@ var sourceHandler = function(compileStep) {
   _cache[compileStep.inputPath] = _cache[compileStep.inputPath] || {}
   var stat = _cache[compileStep.inputPath];
 
-  if (cmd && isModified(stat, compileStep.inputPath)) {
-    if (!stat.data) {
+  if (cmd) {
+    if (!stat.data || isModified(stat, compileStep.inputPath)) {
       var r = sh.exec(cmd);
       stat.data = r.stdout;
       stat.code = r.code;
