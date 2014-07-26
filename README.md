@@ -28,7 +28,18 @@ Add a `ruby-sass.json` file to root directory of project.
 
 **file** `string`
 
-Path to main file.
+Path to main file. Required unless specified `files`.
+
+
+**files** `object`
+
+Format:
+
+    'files': {
+      'main file': 'dependencies', // can be pattern, like 'scss/home/**/*.scss'
+      // or
+      'main file': ['array', 'of', 'dependencies']
+    }
 
 
 **unixNewlines** `boolean`, default: `false`
