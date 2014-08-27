@@ -1,5 +1,7 @@
 Package.describe({
-  summary: 'Style with attitude.'
+  summary: 'Style with attitude.',
+  git: "https://github.com/ovcharik/meteor-ruby-sass.git",
+  version: "0.0.6"
 });
 
 Package._transitional_registerBuildPlugin({
