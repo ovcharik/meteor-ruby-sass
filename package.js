@@ -11,7 +11,7 @@ Package._transitional_registerBuildPlugin({
     'plugin/compile-sass.js'
   ],
   npmDependencies: {
-    'execSync': '1.0.1-pre',
+    'fibers': '1.0.1',
     'minimatch': '0.4.0'
   }
 });

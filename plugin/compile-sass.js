@@ -1,7 +1,9 @@
-var PATH  = Npm.require("path");
-var FS    = Npm.require("fs");
-var EXEC  = Npm.require('execSync').exec;
-var MATCH = Npm.require('minimatch');
+var PATH   = Npm.require("path");
+var FS     = Npm.require("fs");
+var MATCH  = Npm.require('minimatch');
+var FUTURE = Npm.require('fibers/future');
+var EXEC   = Npm.require('child_process').exec;
+var AEXEC  = FUTURE.wrap(EXEC, 1);
 
 // Utils
 var Utils = {
@@ -177,14 +179,8 @@ Cmd.prototype = {
     var time = Utils.fileModifiedTime(path);
     if (this._cache.outdated(file, time)) {
       cmd = this.buildCmd(options, file);
-      var result = EXEC(cmd);
-      if (!result.code) {
-        var data = result.stdout;
-        this._cache.write(file, data);
-      }
-      else {
-        throw result.stdout;
-      }
+      var data = AEXEC(cmd).wait();
+      this._cache.write(file, data);
     }
     return {
       data: this._cache.get(file),
@@ -212,7 +208,7 @@ var compile = function(compileStep) {
   }
   catch (error) {
     compileStep.error({
-      message: "Sass compiler error: \n" + error
+      message: "Sass compiler error: \n" + error.message
     });
   }
 }
