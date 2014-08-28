@@ -9,20 +9,9 @@ Package required `sass` gem.
     $ gem install sass
     # or check http://sass-lang.com/install
 
-For adding package to project edit you `smart.json` file like as example.
+### Add package
 
-    {
-      "packages": {
-        "jade": {},
-        "router": {},
-        "ruby-sass": {
-          "git": "https://github.com/ovcharik/meteor-ruby-sass"
-        }
-      }
-    }
-
-And run `mrt update`.
-
+    $ meteor add ovcharik:ruby-sass
 
 
 ## Configuration
